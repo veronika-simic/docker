@@ -64,3 +64,9 @@ sudo docker run -it fb1b5710140a sh
 allows us to poke arround the container but we wont be able to run any other container inside of it
 
 although two containers can be running at the same time they are totally isolated
+
+## Section 3
+
+First create docker file then pass it to docker client which passes it to docker server and then we will get the docker image
+Inside the docker file we will specify base image, run some commands, and specify the command to run on container setup
+Create a file that creates image that runs redis server
