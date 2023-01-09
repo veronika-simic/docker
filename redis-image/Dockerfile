@@ -11,7 +11,7 @@ FROM alpine
 # it then created a temporary container of that image
 
 RUN apk add --update redis
-
+RUN apk add --update gcc
 
 
 # Tell the image what to do when container starts
