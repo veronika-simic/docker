@@ -70,3 +70,19 @@ although two containers can be running at the same time they are totally isolate
 First create docker file then pass it to docker client which passes it to docker server and then we will get the docker image
 Inside the docker file we will specify base image, run some commands, and specify the command to run on container setup
 Create a file that creates image that runs redis server
+Writing a dockerfile is equall to being give a computer with no OS and being told to install Chrome on it.
+Why use alpine? It is the same question as why use Windows or Ubuntu? 
+The answer is because they have some preinstalled programs that we want to use
+
+What does docker build . do ?
+ It uses our docker file and creates an image out of it. The dot means build context, its a set of files and folders we want to encapsulate
+
+1. From alpine tells docker server to download docker image. We use alpine because it has predefined programs we want
+2. Then run was executed, it looked for the image from the previous step
+3. It got the alpine image and creates temporary container inside which apk add --update redis was executed.
+4. That command is executed in the container and now it has modified FS
+5. Then we take the snapshot of that container, close the container and get the image ready for the next instruction. Image is the FS snapshot of that temporary container
+6. CMD we pass alpine image but with redis on top of it
+7. Get image from previous step, create container out of it, tell the container to execute the command when started "redis-server"
+8. Shut down container, get the image from it 
+9. Output is the image from the last step
