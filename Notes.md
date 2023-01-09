@@ -96,3 +96,12 @@ Tagging an image
 Its not always practical to copy paste the id, so we can do the following --> docker build -t yourDockerId/projectName:version
 E.g.  docker build -t vera/redis:latest and the run it with docker run vera/redis
 Technically just the version is the tag
+
+## Section 4
+1. Create Node JS web app
+2. Create a Dockerfile
+3. Build image from dockerfile
+4. Run image as container
+5. Connect to web app from a browser
+
+alpine is a tag for an image that is as small and compact as posible
