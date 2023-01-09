@@ -105,3 +105,8 @@ Technically just the version is the tag
 5. Connect to web app from a browser
 
 alpine is a tag for an image that is as small and compact as posible
+we have to specify that request should go from local computer to the container (port mapping). If anyone makes a request to some port, redirect it to the container and the port present there. This only applies to incoming containers. request goes to the container
+
+docker run -p 8080:8080 id
+               |    |
+     route incoming request on this port to this port inside container
