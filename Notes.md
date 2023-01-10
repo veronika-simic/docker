@@ -110,3 +110,16 @@ we have to specify that request should go from local computer to the container (
 docker run -p 8080:8080 id
                |    |
      route incoming request on this port to this port inside container
+
+## Section 5
+Build a web page that generates number of visits (node + redis)
+Instead of having one container for both node and redis we are going to have a seperate container for each of them
+Each node container will connect to redis container and store number of visits
+How are we going to make our containers to communicate? 
+We can use docker CLI Networking feature (pain in the neck) or Docker compose
+
+Docker compose is seperate CLI installed with Docker. Used to start multiple containers at the same time
+For that we are going to create a seperate file docker-compose.yml which is going to contain all the options we'd normally pass to docker-cli. Docker compose connects these two containers just by specifying them in the services. We don't have to connect them through some ports
+
+In order to restart our container we have restart policies, by default its no. 
+Docker status of container docker-compose ps. It needs docker-compose.yml otherwise it won't work

@@ -1,5 +1,6 @@
 const express = require("express");
 const redis = require("redis");
+const process = require("process");
 const app = express();
 /* we have to specify where is redis running, the name comes from the docker-compose
  docker sees this name redis-server and it gets redirected to that container
