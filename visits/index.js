@@ -1,7 +1,12 @@
 const express = require("express");
 const redis = require("redis");
 const app = express();
-const client = redis.createClient();
+/* we have to specify where is redis running, the name comes from the docker-compose
+ docker sees this name redis-server and it gets redirected to that container
+*/
+const client = redis.createClient({
+  host: "redis-server",
+});
 client.set("visits", 0);
 
 app.get("/", (req, res) => {
