@@ -123,3 +123,13 @@ For that we are going to create a seperate file docker-compose.yml which is goin
 
 In order to restart our container we have restart policies, by default its no. 
 Docker status of container docker-compose ps. It needs docker-compose.yml otherwise it won't work
+
+## Section 6
+Develop an app, test it, deploy it 
+First we are going to push our code to github. After we are done with that we are going to push our code to Travis CI. There our code is pulled and series of test is ran, which we are going to run ourselfs. And then we are going to push it to AWS
+
+1. We are going to push our code to feature branch
+2. Create pull request, merge it to master
+3. Run tests, if they are success deploy it to AWS Elastic Beanstalk
+
+Docker is not needed in this workflow. Docker is a tool that makes these tasks a lot easier.
