@@ -41,4 +41,6 @@ For that we are runing a comand
 
 This is the command for volumes:
 
-sudo docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app id
+sudo docker run -it -p 3000:3000 -v /app/node_modules -v ${PWD}:/app vera:frontend
+Since this command is not very easy to re-run we are going to create docker compose file. For that we create new file dockcer-compose.yml
+Inside the file we specify what we want and then run docker-compose up
