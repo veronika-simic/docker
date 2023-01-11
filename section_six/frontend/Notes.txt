@@ -1,0 +1,14 @@
+Inside the dockerfile.dev we are going to create an image
+In order to run a file that is not named docker.dev we run the command
+sudo docker build -f NameOfFile .
+We can delete node modules because we have two copies of them. When the image is created we run npm install which installs node modules
+Delete node modules and run build again. After that we are going to build our container 
+sudo docker run id_of_image
+When we then visit localhost:3000 there will be an error. 
+In order to access it we have to run sudo docker run -p port_on_our_machine:port_in_docker_container id_of_image
+
+sudo docker run -p 3000:3000 e6c2cd015b2b3cea0a1d63659ab939c586e0f77b268b902dd7f2b7415dd80ff9 
+Now we can visit localhost:3000
+
+The problem we have now is if we change something in our source code, that is react app. 
+Then we would have to build our image each time
