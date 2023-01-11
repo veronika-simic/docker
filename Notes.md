@@ -94,10 +94,11 @@ docker run id....
 
 Tagging an image
 Its not always practical to copy paste the id, so we can do the following --> docker build -t yourDockerId/projectName:version
-E.g.  docker build -t vera/redis:latest and the run it with docker run vera/redis
+E.g. docker build -t vera/redis:latest and the run it with docker run vera/redis
 Technically just the version is the tag
 
 ## Section 4
+
 1. Create Node JS web app
 2. Create a Dockerfile
 3. Build image from dockerfile
@@ -108,24 +109,26 @@ alpine is a tag for an image that is as small and compact as posible
 we have to specify that request should go from local computer to the container (port mapping). If anyone makes a request to some port, redirect it to the container and the port present there. This only applies to incoming containers. request goes to the container
 
 docker run -p 8080:8080 id
-               |    |
-     route incoming request on this port to this port inside container
+| |
+route incoming request on this port to this port inside container
 
 ## Section 5
+
 Build a web page that generates number of visits (node + redis)
 Instead of having one container for both node and redis we are going to have a seperate container for each of them
 Each node container will connect to redis container and store number of visits
-How are we going to make our containers to communicate? 
+How are we going to make our containers to communicate?
 We can use docker CLI Networking feature (pain in the neck) or Docker compose
 
 Docker compose is seperate CLI installed with Docker. Used to start multiple containers at the same time
 For that we are going to create a seperate file docker-compose.yml which is going to contain all the options we'd normally pass to docker-cli. Docker compose connects these two containers just by specifying them in the services. We don't have to connect them through some ports
 
-In order to restart our container we have restart policies, by default its no. 
+In order to restart our container we have restart policies, by default its no.
 Docker status of container docker-compose ps. It needs docker-compose.yml otherwise it won't work
 
 ## Section 6
-Develop an app, test it, deploy it 
+
+Develop an app, test it, deploy it
 First we are going to push our code to github. After we are done with that we are going to push our code to Travis CI. There our code is pulled and series of test is ran, which we are going to run ourselfs. And then we are going to push it to AWS
 
 1. We are going to push our code to feature branch
@@ -133,3 +136,9 @@ First we are going to push our code to github. After we are done with that we ar
 3. Run tests, if they are success deploy it to AWS Elastic Beanstalk
 
 Docker is not needed in this workflow. Docker is a tool that makes these tasks a lot easier.
+First we are going to install react-app
+These are the commands we are going to need:
+
+1. npm run start (starts development server)
+2. npm run test
+3. npm run build (for building production version)
