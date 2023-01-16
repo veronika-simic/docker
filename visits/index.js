@@ -5,6 +5,7 @@ const app = express();
 /* we have to specify where is redis running, the name comes from the docker-compose
  docker sees this name redis-server and it gets redirected to that container
 */
+/* connection to redis server */
 const client = redis.createClient({
   host: "redis-server",
 });

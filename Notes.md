@@ -116,7 +116,6 @@ alpine is a tag for an image that is as small and compact as posible. When someo
 we have to specify that request should go from local computer to the container (port mapping). If anyone makes a request to some port, redirect it to the container and the port present there. This only applies to incoming containers. request goes to the container. Port changing is done in the runtime. We do not specify it inside the docker file
 
 docker run -p 8080:8080 id
-| |
 route incoming request on this port to this port inside container
 We can change both ports just be carefull when changing the port in docker container, that port has to be the same as the app runing, for e.g. for react its 3000. Then we will have to change it in React also
 
@@ -126,23 +125,45 @@ If this folder does not exist it will create it for us.
 
 If we change something in index.js we would have to rebuild our container and install all the dependecies all over again. This is not ideal. We can avoid it by specifying another COPY command
 
-COPY ./package.json ./ 
+COPY ./package.json ./
 RUN npm install
-COPY ./ ./ 
+COPY ./ ./
 
 since npm install only cares about package.json it should not run if we change something inside the index.js
 This way we say hey only if something inside package.json changes then rebuild the image. We still have to rebuild the image but its much faster
+
 ## Section 5
 
-Build a web page that generates number of visits (node + redis)
+Build a web page that generates number of visits (node + redis). Number of HTTP request is going to be stored with redis server.
+
 Instead of having one container for both node and redis we are going to have a seperate container for each of them
+
 Each node container will connect to redis container and store number of visits
+
 How are we going to make our containers to communicate?
 We can use docker CLI Networking feature (pain in the neck) or Docker compose
 
 Docker compose is seperate CLI installed with Docker. Used to start multiple containers at the same time
-For that we are going to create a seperate file docker-compose.yml which is going to contain all the options we'd normally pass to docker-cli. Docker compose connects these two containers just by specifying them in the services. We don't have to connect them through some ports
+For that we are going to create a seperate file docker-compose.yml which is going to contain all the options we'd normally pass to docker-cli. Docker compose connects these two containers just by specifying them in the services. We don't have to connect them through some ports. Basically what we do is normally we would write commands like
 
+docker build -t sometag
+docker run -p 8080:8080 sometag
+
+But with docker compose we store this two commands inside the docker-compose.yml and pass them to Docker CLI
+This way containers are connected without us needing to do any additional steps
+
+version: '3'
+services:
+redis-server:
+image: 'redis'
+node-app:
+restart: always
+build: .
+ports: - "4001:8081"
+
+services are like containers we need
+build: . means build it from the current dockerfile
+In order to start all the containers inside this yml file we run docker-compose up instead of the docker run imagename we used before.
 In order to restart our container we have restart policies, by default its no.
 Docker status of container docker-compose ps. It needs docker-compose.yml otherwise it won't work
 
@@ -182,3 +203,6 @@ docker exec -it container_id command --> allows us to execute an additional comm
 docker build . --> give our Dockerfile to docker CLI
 docker build -t sometag . --> this way we can name our image what ever we want
 docker run -p 8080:8080 image_name --> port mapping, move the request from this port on local machine to the request on the docker container by the same port number
+docker-compose up --> used to run multiple containers
+docker-compose up --build --> build and run it
+docker-compose up -d --> run containers in the background
