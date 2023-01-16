@@ -4,12 +4,15 @@
 # alpine version means you are not getting a lot of depend from node or whatever you are using
 FROM node:14-alpine
 
+
+WORKDIR /user/app
 #Install dependencies
 # first slash means everything from the current directory, second means to the current container
 # npm install cant run without this because the package.json is not visible inside the temporary container
 # we need to copy everything before npm install runs
-COPY ./ ./ 
+COPY ./package.json ./ 
 RUN npm install
+COPY ./ ./ 
 
 # Default
 CMD [ "npm","start" ]

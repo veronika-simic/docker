@@ -7,11 +7,11 @@
   Docker makes it really easy to install and run software without worrying about setup or dependencies
 - What is Docker ?
   Docker is a platform for creating and running containers
-  Docker is composed of Docker Client, Server, Machine, Images, Hub, Compose. This tools alow us to create Docker Containers. 
+  Docker is composed of Docker Client, Server, Machine, Images, Hub, Compose. This tools alow us to create Docker Containers.
 - What is image ?
   When we run a command Docker CLI reaches out to Docker Hub and it downloads a Docker Image. Docker Image containes deps and config to run a program. Containers are instances of images, they run a program, they have their own harddrive. Containers are like a running program. It is a program with it's own set of resources
-- Docker CLI or Docker Client 
-  Tool we use to run commands and allows us to interact with Docker Server 
+- Docker CLI or Docker Client
+  Tool we use to run commands and allows us to interact with Docker Server
 - Docker Server or Docker Daemon
   Responsible for everything with containers and images
 - Running a command in Docker
@@ -70,13 +70,14 @@ allows us to poke arround the container but we wont be able to run any other con
 although two containers can be running at the same time they are totally isolated
 
 ## Section 3
+
 To create our own image we first create Dockerfile give it to Docker CLI which passes it to Docker Server which will do everything for us
 First create docker file then pass it to docker client which passes it to docker server and then we will get the docker image
 Inside the docker file we will specify base image, run some commands, and specify the command to run on container setup
 Create a file that creates image that runs redis server
 Writing a dockerfile is equall to being give a computer with no OS and being told to install Chrome on it.
 Why use alpine? It is the same question as why use Windows or Ubuntu?
-The answer is because they have some preinstalled programs that we want to use. 
+The answer is because they have some preinstalled programs that we want to use.
 
 First we install alpine like a basic image, our starting point. But what we actually want is redis. That's why we run apk add --update redis
 
@@ -111,13 +112,26 @@ Technically just the version is the tag
 4. Run image as container
 5. Connect to web app from a browser
 
-alpine is a tag for an image that is as small and compact as posible. When someone makes a request for port 3000 or 4000 we have to specify that this request should then go to the port inside the docker container. 
+alpine is a tag for an image that is as small and compact as posible. When someone makes a request for port 3000 or 4000 we have to specify that this request should then go to the port inside the docker container.
 we have to specify that request should go from local computer to the container (port mapping). If anyone makes a request to some port, redirect it to the container and the port present there. This only applies to incoming containers. request goes to the container. Port changing is done in the runtime. We do not specify it inside the docker file
 
 docker run -p 8080:8080 id
-                | |
+| |
 route incoming request on this port to this port inside container
+We can change both ports just be carefull when changing the port in docker container, that port has to be the same as the app runing, for e.g. for react its 3000. Then we will have to change it in React also
 
+In the dockerfile we can use COPY ./ ./ but the problem with that can be that we could overwrite some files that have the same name. In order to avoid this we are going to do
+WORKDIR /user/app so that all the copying goes to that working directory instead of the root directory.
+If this folder does not exist it will create it for us.
+
+If we change something in index.js we would have to rebuild our container and install all the dependecies all over again. This is not ideal. We can avoid it by specifying another COPY command
+
+COPY ./package.json ./ 
+RUN npm install
+COPY ./ ./ 
+
+since npm install only cares about package.json it should not run if we change something inside the index.js
+This way we say hey only if something inside package.json changes then rebuild the image. We still have to rebuild the image but its much faster
 ## Section 5
 
 Build a web page that generates number of visits (node + redis)
@@ -151,19 +165,20 @@ These are the commands we are going to need:
 
 We are going to have 2 docker files: one for development and one for production
 
-## Commands 
-docker -v or docker version --> gives us a version of docker 
+## Commands
+
+docker -v or docker version --> gives us a version of docker
 docker run image_name -> creates and runs container from image
 docker run image_name command --> overrieds the default command that is available in the image
-docker ps --> lists all running containers 
+docker ps --> lists all running containers
 docker ps --all --> all the containers ever created
 docker create image_name --> create container from an image
 docker start -a conatiner_id --> start the container
-docker system prune --> delets everything 
+docker system prune --> delets everything
 docker logs container_id --> gets all the info that container has
 docker stop container_id
 docker kill container_id
 docker exec -it container_id command --> allows us to execute an additional command inside the running container
-docker build .  --> give our Dockerfile to docker CLI 
+docker build . --> give our Dockerfile to docker CLI
 docker build -t sometag . --> this way we can name our image what ever we want
 docker run -p 8080:8080 image_name --> port mapping, move the request from this port on local machine to the request on the docker container by the same port number
