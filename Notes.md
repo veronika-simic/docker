@@ -111,11 +111,11 @@ Technically just the version is the tag
 4. Run image as container
 5. Connect to web app from a browser
 
-alpine is a tag for an image that is as small and compact as posible
-we have to specify that request should go from local computer to the container (port mapping). If anyone makes a request to some port, redirect it to the container and the port present there. This only applies to incoming containers. request goes to the container
+alpine is a tag for an image that is as small and compact as posible. When someone makes a request for port 3000 or 4000 we have to specify that this request should then go to the port inside the docker container. 
+we have to specify that request should go from local computer to the container (port mapping). If anyone makes a request to some port, redirect it to the container and the port present there. This only applies to incoming containers. request goes to the container. Port changing is done in the runtime. We do not specify it inside the docker file
 
 docker run -p 8080:8080 id
-| |
+                | |
 route incoming request on this port to this port inside container
 
 ## Section 5
@@ -164,3 +164,6 @@ docker logs container_id --> gets all the info that container has
 docker stop container_id
 docker kill container_id
 docker exec -it container_id command --> allows us to execute an additional command inside the running container
+docker build .  --> give our Dockerfile to docker CLI 
+docker build -t sometag . --> this way we can name our image what ever we want
+docker run -p 8080:8080 image_name --> port mapping, move the request from this port on local machine to the request on the docker container by the same port number
