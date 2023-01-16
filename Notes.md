@@ -7,13 +7,17 @@
   Docker makes it really easy to install and run software without worrying about setup or dependencies
 - What is Docker ?
   Docker is a platform for creating and running containers
-  Docker is composed of Docker Client, Server, Machine, Images, Hub, Compose
+  Docker is composed of Docker Client, Server, Machine, Images, Hub, Compose. This tools alow us to create Docker Containers. 
 - What is image ?
-  When we run a command Docker CLI reaches out to Docker Hub and it downloads a Docker Image. Docker Image containes deps and config to run a program. Containers are instances of images, they run a program, they have their own harddrive
+  When we run a command Docker CLI reaches out to Docker Hub and it downloads a Docker Image. Docker Image containes deps and config to run a program. Containers are instances of images, they run a program, they have their own harddrive. Containers are like a running program. It is a program with it's own set of resources
+- Docker CLI or Docker Client 
+  Tool we use to run commands and allows us to interact with Docker Server 
+- Docker Server or Docker Daemon
+  Responsible for everything with containers and images
 - Running a command in Docker
   docker run hello-world -> Starts up docker Client and sends the message to docker Server which looks up the image first localy in image cache and if it does not find it then it goes to Docker Hub (repo with free public images).Docker Hub downloaded it to our local machine and then the server can use it. It creates a container of that image and runs a single program inside of that container.
 - What is a container ?
-  Kernel is a layer that governs access between programs and actual hard drive. Programs like spotify, chrome, nodejs talk to Kernel with System Calls. Kernel gives endpoints which programs can use to actually interact with hard drive.
+  Kernel is a layer that governs access between programs and actual hard drive. Programs like spotify, chrome, nodejs talk to Kernel with System Calls. Kernel gives endpoints or functions which programs can use to actually interact with hard drive and write to it.
   Namespacing allows us to isolate resources per process, control group limits amount of resources used per process. Container is a set of processes. Image contains FS Snapshot and a Startup Command.
   Installing a docker on Windows installed Linux Virtual Machine and inside that machine are containers.
 
@@ -66,13 +70,15 @@ allows us to poke arround the container but we wont be able to run any other con
 although two containers can be running at the same time they are totally isolated
 
 ## Section 3
-
+To create our own image we first create Dockerfile give it to Docker CLI which passes it to Docker Server which will do everything for us
 First create docker file then pass it to docker client which passes it to docker server and then we will get the docker image
 Inside the docker file we will specify base image, run some commands, and specify the command to run on container setup
 Create a file that creates image that runs redis server
 Writing a dockerfile is equall to being give a computer with no OS and being told to install Chrome on it.
 Why use alpine? It is the same question as why use Windows or Ubuntu?
-The answer is because they have some preinstalled programs that we want to use
+The answer is because they have some preinstalled programs that we want to use. 
+
+First we install alpine like a basic image, our starting point. But what we actually want is redis. That's why we run apk add --update redis
 
 What does docker build . do ?
 It uses our docker file and creates an image out of it. The dot means build context, its a set of files and folders we want to encapsulate
@@ -142,3 +148,19 @@ These are the commands we are going to need:
 1. npm run start (starts development server)
 2. npm run test
 3. npm run build (for building production version)
+
+We are going to have 2 docker files: one for development and one for production
+
+## Commands 
+docker -v or docker version --> gives us a version of docker 
+docker run image_name -> creates and runs container from image
+docker run image_name command --> overrieds the default command that is available in the image
+docker ps --> lists all running containers 
+docker ps --all --> all the containers ever created
+docker create image_name --> create container from an image
+docker start -a conatiner_id --> start the container
+docker system prune --> delets everything 
+docker logs container_id --> gets all the info that container has
+docker stop container_id
+docker kill container_id
+docker exec -it container_id command --> allows us to execute an additional command inside the running container
