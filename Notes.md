@@ -199,6 +199,27 @@ Since generating react app installed node_modules and dockerfile also does the s
 
 docker run -p 3000:3000 d2ebcab96b9375769d3622bcda10040933b2b95fdc76635997a90b5 
 
+
+What happens if we change something in the src folder? The changes are not reflected and we should rebuild our image which is not ideal. Why is that? 
+
+FROM node:16-alpine
+
+WORKDIR '/app'
+
+COPY package.json .
+RUN npm install
+COPY . . 
+
+CMD ["npm", "run", "start"]
+
+Whats happening here is that we build temporary image and temporary containers. So after COPY . . command everything from our src folder get copied into a temporary docker container that has a /app folder (specified by WORKDIR). This folder now has copies of src and public in a state they were in before we changed something, that is during the build process. 
+We need a way to avoid doing this straight copies. For that we are going to use docker volumes.  With that we are only copying references to those folders not the actual folders. The syntax for this is crazyyyy
+
+sudo docker run -it -p 3000:3000 -v /app/node_modules -v ${PWD}:/app vera:frontend
+
+The reason we do not have colon in this command between node_modules is because they do not exist in our current project. We deleted them for a reason above
+
+With this we can now change something and see the change immediately
 ## Commands
 
 docker -v or docker version --> gives us a version of docker
