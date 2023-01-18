@@ -278,6 +278,10 @@ Although this is a better approach the problem is that we can not rerun test or 
  sudo docker attach 68dac6933931 
 
  Still nothing happens because npm test is not running. What is running is npm and then npm runs test. By attaching we attach to npm and not npm tests
+
+ In development environment we have development server and in production server we are going to also need some type of server. This server is going to send index.html and react code. For that we are going to use nginx and create seperate dockerfile for production version. 
+
+ But where is ngix comming from? Thats why we will have two phases in the docker file. (build and run phase). We are specifying two base images. Run phase is going to copy results from the build directory
 ## Commands
 
 docker -v or docker version --> gives us a version of docker
