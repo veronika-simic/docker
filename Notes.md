@@ -239,10 +239,40 @@ services:
 So now we can just run docker-compose up
 
 What about tests? 
+
 In order to overwrite the default command CMD from dockerfile.dev we can run in the terminal during the build process
 
 docker run image_id npm run test
 
+Now we have the same problem with test we had with app.js. Nothing gets updated :(
+There are two ways to solve this:
+1. attach to exsiting container (not good)
+
+docker exec -it container_id npm run test
+
+Not very good aproach because we have to execute three commands each time we test
+
+2. create another service in docker-compose
+
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+     
 ## Commands
 
 docker -v or docker version --> gives us a version of docker
