@@ -219,7 +219,30 @@ sudo docker run -it -p 3000:3000 -v /app/node_modules -v ${PWD}:/app vera:fronte
 
 The reason we do not have colon in this command between node_modules is because they do not exist in our current project. We deleted them for a reason above
 
-With this we can now change something and see the change immediately
+With this we can now change something and see the change immediately.
+
+In order to make this command easier we can make use of docker compose. So we will create a new file for that called docker-compose.yml
+
+version: '3'
+services:
+  react-app: // name it whatever
+    build:  // we can not use . anymore because our file is called dockerfile.dev thats why we chang it
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules // do not map this
+      - .:/app // map current to /app in container
+
+
+So now we can just run docker-compose up
+
+What about tests? 
+In order to overwrite the default command CMD from dockerfile.dev we can run in the terminal during the build process
+
+docker run image_id npm run test
+
 ## Commands
 
 docker -v or docker version --> gives us a version of docker
