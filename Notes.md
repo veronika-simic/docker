@@ -169,13 +169,15 @@ Docker status of container docker-compose ps. It needs docker-compose.yml otherw
 
 ## Section 6
 
-Develop an app, test it, deploy it
+Develop an app, test it, deploy it. After that we should be able to develop it again, test it and deploy it.
 First we are going to push our code to github. After we are done with that we are going to push our code to Travis CI. There our code is pulled and series of test is ran, which we are going to run ourselfs. And then we are going to push it to AWS
 
 1. We are going to push our code to feature branch
 2. Create pull request, merge it to master
 3. Run tests, if they are success deploy it to AWS Elastic Beanstalk
 
+Three phases:
+Dev phase, Test phase and Production phase
 Docker is not needed in this workflow. Docker is a tool that makes these tasks a lot easier.
 First we are going to install react-app
 These are the commands we are going to need:
@@ -185,6 +187,17 @@ These are the commands we are going to need:
 3. npm run build (for building production version)
 
 We are going to have 2 docker files: one for development and one for production
+The dockerfile.dev is for development and the docker file is for production
+
+First we install React app then build it. Inside the build folder are two files index.html and script.js which we are going to serve to AWS
+
+Every time we run docker build . its looking for a dockerfile but we have dockerfile.dev.
+We need to pass -f flag and name of file
+docker build -f Dockerfile.dev .
+
+Since generating react app installed node_modules and dockerfile also does the same we can delete the node modules from root project. That way image is built much faster. To start a contianer do not forget to map ports. 
+
+docker run -p 3000:3000 d2ebcab96b9375769d3622bcda10040933b2b95fdc76635997a90b5 
 
 ## Commands
 
@@ -206,3 +219,4 @@ docker run -p 8080:8080 image_name --> port mapping, move the request from this 
 docker-compose up --> used to run multiple containers
 docker-compose up --build --> build and run it
 docker-compose up -d --> run containers in the background
+docker build -f Dockerfile.dev . --> build a image from a file that has a different name than Dockerfile
